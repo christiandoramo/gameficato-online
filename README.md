@@ -12,7 +12,7 @@ link: https://drawsql.app/teams/christians-team-11/diagrams/gameficato-store-ser
 ER do Banco de dados do Customer-Service:
 https://drawsql.app/teams/christians-team-11/diagrams/gameficato-customer-service
 
-![er-costumer-service](docs/imgs//er-costumer-service.png)
+![er-customer-service](docs/imgs//er-customer-service.png)
 
 ER do Banco de dados do serviço original (sem a divisão em microsserviços):
 https://drawsql.app/teams/christians-team-11/diagrams/gameficato-online
