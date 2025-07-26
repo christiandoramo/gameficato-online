@@ -16,8 +16,6 @@
 
 _ER do Banco de dados do serviço original (sem a divisão em microsserviços): https://drawsql.app/teams/christians-team-11/diagrams/gameficato-online_
 
-
-
 ### Objetivo
 
 * Sistema para praticar clean-architecture + microsserviços
@@ -59,5 +57,4 @@ _ER do Banco de dados do serviço original (sem a divisão em microsserviços): 
 #### 3. Para usuário ADMIN
 
 * 3.1 Inserir e editar jogos de cada loja (Apenas para o MVP inicial)
-
-
+* 3.2 Criar Lojas iniciais - Ex: Mercato Online - e outras stores para logins de teste
