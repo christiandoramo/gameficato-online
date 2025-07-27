@@ -30,19 +30,19 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:?POSTGRES_DB env var is missing on .env file}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD env var is missing on .env file}
 
-  users:
+  customers:
     profiles:
       - local
     build:
       context: .
       dockerfile: ./deploy/service/Dockerfile
       args:
-        SERVICE: users
-    hostname: users
+        SERVICE: customers
+    hostname: customers
     restart: unless-stopped
     environment:
-      APP_NAME: 'USERS MICROSERVICE'
-      APP_ENV: ${USERS_APP_ENV:-local}
+      APP_NAME: 'CUSTOMERS MICROSERVICE'
+      APP_ENV: ${CUSTOMERS_APP_ENV:-local}
       APP_DATABASE_HOST: 'db'
       APP_DATABASE_MIGRATION_HOST: ${POSTGRES_DB:?POSTGRES_DB env var is missing on .env file}
       APP_DATABASE_PORT: 5432
@@ -51,43 +51,43 @@ services:
       APP_DATABASE_USERNAME: ${POSTGRES_USER:?POSTGRES_USER env var is missing on .env file}
       APP_DATABASE_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD env var is missing on .env file}
       APP_DATABASE_SSL: 'false'
-      APP_DATABASE_MIGRATION_TABLE: 'sequelize_meta_users'
-      APP_DATABASE_SEEDERS_TABLE: 'sequelize_seeders_users'
-      APP_DATABASE_LOG: ${USERS_APP_DATABASE_LOG:-true}
+      APP_DATABASE_MIGRATION_TABLE: 'sequelize_meta_customers'
+      APP_DATABASE_SEEDERS_TABLE: 'sequelize_seeders_customers'
+      APP_DATABASE_LOG: ${CUSTOMERS_APP_DATABASE_LOG:-true}
       APP_NATS_SERVERS: 'nats:4222'
-      APP_NATS_DELIVER_GROUP: 'users'
-      APP_NATS_QUEUE_GROUP: 'users'
-      APP_NATS_DELIVER_TO: 'users'
-      APP_NATS_SUBJECT: 'users.>'
-      APP_LOG_LEVEL: ${USERS_APP_LOG_LEVEL:-debug}
+      APP_NATS_DELIVER_GROUP: 'customers'
+      APP_NATS_QUEUE_GROUP: 'customers'
+      APP_NATS_DELIVER_TO: 'customers'
+      APP_NATS_SUBJECT: 'customers.>'
+      APP_LOG_LEVEL: ${CUSTOMERS_APP_LOG_LEVEL:-debug}
     depends_on:
       - nats
       - db
 
-  api-users:
+  api-gateway:
     profiles:
       - local
     build:
       context: .
       dockerfile: ./deploy/api/Dockerfile
       args:
-        SERVICE: api-users
+        SERVICE: api-gateway
     ports:
       - '3000:3000'
-    hostname: api-users
+    hostname: api-gateway
     restart: unless-stopped
     environment:
-      APP_NAME: 'API GATEWAY USERS'
-      APP_ENV: ${API_USERS_APP_ENV:-local}
-      APP_JWT_TOKEN: ${API_USERS_APP_JWT_TOKEN:?API_USERS_APP_JWT_TOKEN env var is missing on .env file}
+      APP_NAME: 'API GATEWAY'
+      APP_ENV: ${API_GATEWAY_APP_ENV:-local}
+      APP_JWT_TOKEN: ${API_GATEWAY_APP_JWT_TOKEN:?API_GATEWAY_APP_JWT_TOKEN env var is missing on .env file}
       APP_NATS_SERVERS: 'nats:4222'
-      APP_NATS_DELIVER_GROUP: 'api-users'
-      APP_NATS_QUEUE_GROUP: 'api-users'
-      APP_NATS_DELIVER_TO: 'api-users'
-      APP_NATS_SUBJECT: 'api-users.>'
+      APP_NATS_DELIVER_GROUP: 'api-gateway'
+      APP_NATS_QUEUE_GROUP: 'api-gateway'
+      APP_NATS_DELIVER_TO: 'api-gateway'
+      APP_NATS_SUBJECT: 'api-gateway'
       APP_PORT: 3000
       APP_JWT_EXPIRES_S: 300
     depends_on:
       - nats
-      - users
+      - customers
       - db

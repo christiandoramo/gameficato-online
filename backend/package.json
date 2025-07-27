@@ -1,11 +1,11 @@
 {
-  "name": "mercato-online",
+  "name": "gameficato-online",
   "version": "0.1.0",
-  "description": "Mercato Online - Projeto de Marketplace",
+  "description": "Gameficato Online - Projeto de serviço de jogos para Marketplaces",
   "author": {
-    "name": "André Aziz",
+    "name": "Christian Oliveira",
     "url": "https://",
-    "email": "andreaziz@gmail.com"
+    "email": "christiandoramo@gmail.com"
   },
   "private": true,
   "license": "UNLICENSED",

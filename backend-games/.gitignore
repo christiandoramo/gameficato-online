@@ -1,1 +1,23 @@
+# env
 .env
+
+# binários
+/server
+
+# dependências baixadas
+/vendor
+
+# arquivos temporários
+*.log
+*.tmp
+
+# arquivos do editor
+.vscode/
+.idea/
+.DS_Store
+
+# banco local (caso esteja usando SQLite em testes)
+*.db
+
+# migrações (caso queira ignorar scripts grandes ou temporários)
+migrations/

@@ -1,3 +1,4 @@
+// backend-games/cmd/server/main.go
 package main
 
 import (

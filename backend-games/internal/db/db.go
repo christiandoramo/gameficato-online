@@ -33,7 +33,7 @@ func ConnectAndMigrate() (*gorm.DB, error) {
 	}
 
 	// Auto‑migrate dos modelos: cria/atualiza tabelas sem SQL manual
-	if err := db.AutoMigrate(&models.CheckIn{}); err != nil {
+	if err := db.AutoMigrate(&models.CheckIn{}, &models.Sequence{}); err != nil {
 		return nil, err
 	}
 

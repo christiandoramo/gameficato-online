@@ -8,7 +8,7 @@ import { useRequest } from "@/lib/hooks/useRequest";
 
 interface CheckInConfirmationResponse {
   message: string;
-  valueReceived: number;
+  coinsReceived: number;
   status: "receivedNow" | "waitToReceive" | "error";
 }
 
