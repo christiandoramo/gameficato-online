@@ -32,7 +32,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  @apply bg-secondary text-gray-800 dark:bg-darkbg dark:text-darkfg;
+  /* @apply bg-secondary text-gray-800 dark:bg-darkbg dark:text-darkfg; */
 }
 
 h1 {

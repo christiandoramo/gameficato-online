@@ -1,0 +1,1 @@
+para apagar imagens: docker rmi $(docker images -a -q)

@@ -1,3 +1,5 @@
+// frontend/src/App.tsx
+
 import { useEffect } from 'react';
 import { createBrowserRouter, type RouteObject, RouterProvider } from 'react-router-dom';
 

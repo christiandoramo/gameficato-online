@@ -1,5 +1,4 @@
-'use client';
-
+// frontend/src/pages/login/index.tsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 

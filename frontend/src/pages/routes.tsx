@@ -1,22 +1,22 @@
-// src/pages/routes.tsx
-import type { RouteObject } from 'react-router-dom';
+// frontend/src/pages/routes.tsx
+import type { RouteObject } from "react-router-dom";
 
-import Login from './login';
-import Home from './home';
-import Gameplay from './gameplay';
+import Login from "./login";
+import Home from "./home";
+import Gameplay from "./gameplay";
+import Layout from "@/components/layout";
 
 export const loginRoutesEnum = {
-  LOGIN: '/'
+  LOGIN: "/",
 };
 
 export const homeRoutesEnum = {
-  HOME: '/home',
+  HOME: "/home",
 };
 
 export const gameplayRoutesEnum = {
-  GAMEPLAY: '/gameplay'
+  GAMEPLAY: "/gameplay",
 };
-
 
 export const loginRoutes: RouteObject[] = [
   {
@@ -28,14 +28,13 @@ export const loginRoutes: RouteObject[] = [
 export const homeRoutes: RouteObject[] = [
   {
     path: homeRoutesEnum.HOME,
-    element: <Home />,
-  },
-];
-
-
-export const gameplayRoutes: RouteObject[] = [
-  {
-    path: gameplayRoutesEnum.GAMEPLAY,
-    element: <Gameplay/>,
+    element: <Layout />,
+    children: [
+      {
+        path: "",
+        element: <Home />,
+      },
+      { path: gameplayRoutesEnum.GAMEPLAY, element: <Gameplay /> },
+    ],
   },
 ];
