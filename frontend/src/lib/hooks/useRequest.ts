@@ -12,7 +12,7 @@ import ConnectionAPI, {
 import { useGlobalContext } from "../contexts/globalContext";
 
 export const useRequest = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const { setNotification, setUser } = useGlobalContext();
 
   const authRequest = async (

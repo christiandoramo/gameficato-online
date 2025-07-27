@@ -1,18 +1,34 @@
 // src/games/GameCheckIn.tsx
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  gameplayService,
-  type CheckInConfirmationResponse,
-} from "../gameplay-service";
+
+import { URL_GAMEPLAY } from "@/lib/api/base-urls";
+import { MethodsEnum } from "@/lib/utils/http-methods.enum";
+import { useRequest } from "@/lib/hooks/useRequest";
+
+interface CheckInConfirmationResponse {
+  message: string;
+  valueReceived: number;
+  status: "receivedNow" | "waitToReceive" | "error";
+}
+
+// interface CalendarCheckIn {
+//   nextDayToReceive: { coins: number; day: Date };
+//   calendarDays: { coins: number; day: Date; received: boolean }[];
+// }
 
 export default function GameCheckIn() {
   const [result, setResult] = useState<CheckInConfirmationResponse | null>(
     null
   );
 
+  const { request } = useRequest();
+
   const handleCheckIn = async () => {
-    const data = await gameplayService.handleCheckIn("1adsaiasjd"); // mocked
+    const data = await request<CheckInConfirmationResponse>(
+      `${URL_GAMEPLAY}/${1}/${"userId-dasdsdasdasdasd"}`,
+      MethodsEnum.GET
+    );
     setResult(data ?? null);
   };
 

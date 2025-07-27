@@ -1,3 +1,5 @@
+// frontend/src/lib/contexts/themeContext.tsx
+
 import { createContext, useContext, useEffect, useState} from 'react'
 
 interface ThemeContextProps{

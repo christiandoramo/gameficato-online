@@ -1,7 +1,8 @@
+// frontend/src/lib/hooks/useNotification.ts
 import { notification as notificationAntd } from 'antd';
 import { useEffect } from 'react';
 
-import { useGlobalContext } from './globalContext';
+import { useGlobalContext } from '../contexts/globalContext';
 
 export const useNotification = () => {
   const [api, contextHolder] = notificationAntd.useNotification();

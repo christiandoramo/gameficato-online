@@ -8,7 +8,7 @@ import { URL_USER } from './lib/api/base-urls';
 import { MethodsEnum } from './lib/utils/http-methods.enum';
 import { verifyLoggedIn } from './lib/api/auth';
 import { useGlobalContext } from './lib/contexts/globalContext';
-import { useNotification } from './lib/contexts/notificationContext';
+import { useNotification } from './lib/hooks/useNotification';
 import { useRequest } from './lib/hooks/useRequest';
 
 const routes: RouteObject[] = [...loginRoutes];

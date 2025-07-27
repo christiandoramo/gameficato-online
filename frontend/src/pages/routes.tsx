@@ -7,15 +7,15 @@ import Gameplay from "./gameplay";
 import Layout from "@/components/layout";
 
 export const loginRoutesEnum = {
-  LOGIN: "/",
+  LOGIN: "/login",
 };
 
 export const homeRoutesEnum = {
-  HOME: "/home",
+  HOME: "/",
 };
 
 export const gameplayRoutesEnum = {
-  GAMEPLAY: "/gameplay",
+  GAMEPLAY: "gameplay",
 };
 
 export const loginRoutes: RouteObject[] = [
