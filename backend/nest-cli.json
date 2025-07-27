@@ -1,50 +1,32 @@
 {
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/api-users/src",
+  "sourceRoot": "apps/api-gateway/src",
   "monorepo": true,
-  "root": "apps/api-users",
+  "root": "apps/api-gateway",
   "compilerOptions": {
     "webpack": true,
-    "tsConfigPath": "apps/api-users/tsconfig.app.json",
+    "tsConfigPath": "apps/api-gateway/tsconfig.app.json",
     "assets": [
-      "apps/api-users/src/assets/i18n/**/*"
+      "apps/api-gateway/src/assets/i18n/**/*"
     ]
   },
   "projects": {
-    "api-users": {
+    "api-gateway": {
       "type": "application",
-      "root": "apps/api-users",
+      "root": "apps/api-gateway",
       "entryFile": "main",
-      "sourceRoot": "apps/api-users/src",
+      "sourceRoot": "apps/api-gateway/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/api-users/tsconfig.app.json"
+        "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
       }
     },
-    "customer": {
+    "customers": {
       "type": "application",
-      "root": "apps/customer",
+      "root": "apps/customers",
       "entryFile": "main",
-      "sourceRoot": "apps/customer/src",
+      "sourceRoot": "apps/customers/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/customer/tsconfig.app.json"
-      }
-    },
-    "manager": {
-      "type": "application",
-      "root": "apps/manager",
-      "entryFile": "main",
-      "sourceRoot": "apps/manager/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/manager/tsconfig.app.json"
-      }
-    },
-    "users": {
-      "type": "application",
-      "root": "apps/users",
-      "entryFile": "main",
-      "sourceRoot": "apps/users/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/users/tsconfig.app.json"
+        "tsConfigPath": "apps/customers/tsconfig.app.json"
       }
     }
   }

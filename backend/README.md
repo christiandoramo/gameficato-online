@@ -1,3 +1,17 @@
+seedando:
+
+ENV_FILE=.customers.env npx sequelize-cli  seed:generate --name add-stores
+
+rodando os seed
+./seed.sh
+
+criando nova migração
+
+ENV_FILE=.customers.env npx sequelize-cli migration:generate --name add-fields-to-users
+
+rodando as migration
+./migrate.sh
+
 ### Para criar novo serviço:
 ```
 npx nest g app <nome do service - ex: products>

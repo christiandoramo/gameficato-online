@@ -17,23 +17,23 @@
     "incremental": true,
     "skipLibCheck": true,
     "paths": {
-      "@desen-web/api-users": [
-        "apps/api-users/src"
+      "@gameficato/api-gateway": [
+        "apps/api-gateway/src"
       ],
-      "@desen-web/api-users/*": [
-        "apps/api-users/src/*"
+      "@gameficato/api-gateway/*": [
+        "apps/api-gateway/src/*"
       ],
-      "@desen-web/common": [
+      "@gameficato/common": [
         "libs/common/src"
       ],
-      "@desen-web/common/*": [
+      "@gameficato/common/*": [
         "libs/common/src/*"
       ],
-      "@desen-web/users": [
-        "apps/users/src"
+      "@gameficato/customers": [
+        "apps/customers/src"
       ],
-      "@desen-web/users/*": [
-        "apps/users/src/*"
+      "@gameficato/customers/*": [
+        "apps/customers/src/*"
       ]
     },
     "plugins": [

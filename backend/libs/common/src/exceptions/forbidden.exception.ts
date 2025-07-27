@@ -1,8 +1,8 @@
 import {
   DefaultException,
   Exception,
-} from '@desen-web/common/helpers/error.helper';
-import { ExceptionTypes } from '@desen-web/common/helpers/error.constants';
+} from '@gameficato/common/helpers/error.helper';
+import { ExceptionTypes } from '@gameficato/common/helpers/error.constants';
 
 @Exception(ExceptionTypes.FORBIDDEN, 'FORBIDDEN')
 export class ForbiddenException extends DefaultException {
