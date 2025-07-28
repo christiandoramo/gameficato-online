@@ -1,3 +1,4 @@
+// apps/api-gateway/src/infrastructure/nest/auth/jwt.guard.ts
 import { isObservable, lastValueFrom } from 'rxjs';
 import { ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';

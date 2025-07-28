@@ -1,3 +1,4 @@
+// apps/api-gateway/src/infrastructure/nest/controllers/endpoint.constants.ts
 export const HTTP_ENDPOINTS = {
   AUTH: {
     CHANGE_PASSWORD: 'auth/password',

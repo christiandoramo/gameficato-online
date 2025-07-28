@@ -1,3 +1,4 @@
+// apps/customers/src/application/events/user.emitter.ts
 import type { User } from '@gameficato/customers/domain/entities/user.entity';
 
 export type UserEvent = Pick<User, 'id' | 'name' | 'email'>;

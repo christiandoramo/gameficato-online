@@ -4,6 +4,7 @@ export interface User extends Domain<string> {
   name: string;
   email: string;
   password: string;
+  storeId: string;
 }
 
 export class UserEntity implements User {

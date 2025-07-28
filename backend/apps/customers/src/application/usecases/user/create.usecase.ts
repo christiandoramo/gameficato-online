@@ -1,3 +1,4 @@
+// apps/customers/src/application/usecases/user/create.usecase.ts
 import type { Logger } from 'winston';
 import { MissingDataException } from '@gameficato/common/exceptions/missing_data.exception';
 import type { User } from '@gameficato/customers/domain/entities/user.entity';
@@ -36,10 +37,10 @@ export class CreateUserUseCase {
    * @throws {UserAlreadyExistsException} Thrown when user already exists.
    */
   async execute(user: CreateUserData): Promise<User> {
-    const { id, name, password, email } = user;
+    const { id, name, password, email, storeId } = user;
 
     // Data input check
-    if (!id || !name || !password || !email) {
+    if (!id || !name || !password || !email || !storeId) {
       throw new MissingDataException([
         ...(!id ? ['Id'] : []),
         ...(!name ? ['Name'] : []),

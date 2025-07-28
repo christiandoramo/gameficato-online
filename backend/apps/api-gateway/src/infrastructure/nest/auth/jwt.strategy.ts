@@ -1,3 +1,4 @@
+// apps/api-gateway/src/infrastructure/nest/auth/jwt.strategy.ts
 import { Logger } from 'winston';
 import { v4 as uuidV4 } from 'uuid';
 import { ExtractJwt, Strategy } from 'passport-jwt';

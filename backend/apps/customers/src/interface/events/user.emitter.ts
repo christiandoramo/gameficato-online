@@ -1,3 +1,4 @@
+// apps/customers/src/interface/events/user.emitter.ts
 import {
   IsUUID,
   IsNotEmpty,

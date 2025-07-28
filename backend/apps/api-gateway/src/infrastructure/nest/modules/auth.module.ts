@@ -1,3 +1,4 @@
+// apps/api-gateway/src/infrastructure/nest/modules/auth.module.ts
 import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule } from '@nestjs/config';

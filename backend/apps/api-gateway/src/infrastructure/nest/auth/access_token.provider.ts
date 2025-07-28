@@ -1,3 +1,4 @@
+// apps/api-gateway/src/infrastructure/nest/auth/access_token.provider.ts
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';

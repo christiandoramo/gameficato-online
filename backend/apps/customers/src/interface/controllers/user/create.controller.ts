@@ -1,3 +1,4 @@
+// apps/customers/src/interface/controllers/user/create.controller.ts
 import { Logger } from 'winston';
 import {
   IsUUID,
@@ -17,7 +18,10 @@ import {
 import { IsIsoStringDateFormat } from '@gameficato/common/decorators/validate_iso_string_date_format.decorator';
 import { filterProperties } from '@gameficato/common/utils/filter_properties.util';
 
-type TCreateUserRequest = Pick<User, 'id' | 'name' | 'password' | 'email'>;
+type TCreateUserRequest = Pick<
+  User,
+  'id' | 'name' | 'password' | 'email' | 'storeId'
+>;
 
 export class CreateUserRequest
   extends AutoValidator
@@ -38,6 +42,9 @@ export class CreateUserRequest
 
   @IsEmail()
   email: string;
+
+  @IsUUID()
+  storeId: string;
 
   constructor(props: TCreateUserRequest) {
     super(props);

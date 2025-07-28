@@ -1,3 +1,5 @@
+//apps/api-gateway/src/infrastructure/nest/controllers/auth/login.controller.ts
+
 import {
   Controller,
   Post,
@@ -5,7 +7,13 @@ import {
   HttpStatus,
   UseGuards,
 } from '@nestjs/common';
-import { IsEmail, IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  IsUUID,
+  MaxLength,
+} from 'class-validator';
 import { Logger } from 'winston';
 import {
   ApiTags,
@@ -40,6 +48,10 @@ export class AuthenticateRestRequest {
   @IsString()
   @MaxLength(255)
   password!: string;
+
+  @ApiProperty({ example: 'a1b2c3d4-e5f6-7890-abcd-ef0123456789' })
+  @IsUUID()
+  storeId!: string;
 
   constructor(props: AuthenticateRestRequest) {
     Object.assign(this, props);

@@ -1,8 +1,9 @@
+// apps/api-gateway/src/infrastructure/nest/auth/local.strategy.ts
 import { Logger } from 'winston';
 import { v4 as uuidV4 } from 'uuid';
 import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { BcryptHashService } from '@gameficato/common/modules/bcrypt.module';
 import {
   InjectNatsService,
@@ -13,11 +14,13 @@ import {
   InjectValidator,
   Validator,
 } from '@gameficato/common/modules/validation.module';
-import { AuthenticateRestRequest } from '@gameficato/api-gateway/infrastructure/nest/controllers/auth/login.controller';
+//import { AuthenticateRestRequest } from '@gameficato/api-gateway/infrastructure/nest/controllers/auth/login.controller';
 import { AuthUser } from './auth_user.dto';
 import { GetUserByEmailRequest } from '@gameficato/customers/interface/controllers/user/get_by_email.controller';
 import { GetUserByEmailServiceNats } from '@gameficato/customers/infrastructure/nest/exports/user/get_by_email.service';
-import { filterProperties } from '@gameficato/common/utils/filter_properties.util';
+//import { filterProperties } from '@gameficato/common/utils/filter_properties.util';
+import { CreateUserRequest } from '@gameficato/customers/interface/controllers/user/create.controller';
+import { CreateUserServiceNats } from '@gameficato/customers/infrastructure/nest/exports/user/create.service';
 
 /**
  * Implement local strategy. Authenticate user with phone number and password.
@@ -61,59 +64,64 @@ export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
     username: string,
     password: string,
   ): Promise<AuthUser> {
+    const { storeId } = request.body as { storeId: string };
+
     const requestId = request?.id ?? uuidV4();
 
     this.logger = this.logger.child({ loggerId: requestId });
-    this.logger.debug('Authenticating user.', { username });
+    this.logger.debug('Login rápido/quick', { username, storeId });
 
-    const payload = new AuthenticateRestRequest({
-      username,
-      password,
-    });
-    await this.validator(payload);
+    // const payload = new AuthenticateRestRequest({
+    //   username,
+    //   password,
+    // });
+    // await this.validator(payload); // comentado para agilizar
 
-    username = username.replace(/\+/, '');
-
-    const userData = new GetUserByEmailRequest({ email: username });
-
-    // Create get user service
-    const getUserByPhoneNumberService = new GetUserByEmailServiceNats(
+    const getReq = new GetUserByEmailRequest({ email: username });
+    const getSvc = new GetUserByEmailServiceNats(
       requestId,
       this.logger,
       this.natsService,
     );
+    let user = await getSvc.execute(getReq);
+    const pass = uuidV4();
 
-    // Get user data.
-    const userFound = await getUserByPhoneNumberService.execute(userData);
+    if (!user) {
+      this.logger.debug('Criando novo usuário', { email: username, storeId });
 
-    // If no user found, kick user.
-    if (!userFound) {
-      this.logger.debug('User not found.', { phoneNumber: username });
-      throw new UnauthorizedException();
+      const createReq = new CreateUserRequest({
+        id: uuidV4(),
+        name: username.split('@')[0],
+        password: pass,
+        email: username,
+        storeId,
+      });
+      this.logger.warn(createReq);
+
+      const createSvc = new CreateUserServiceNats(
+        requestId,
+        this.logger,
+        this.natsService,
+      );
+
+      const a = await createSvc.execute(createReq);
+
+      user = { ...a, password: pass };
+
+      this.logger.info('Usuario criado com quick-login', {
+        id: user.id,
+        email: user.email,
+        storeId,
+      });
     }
 
-    // If user has no password, kick user.
-    if (!userFound.password) {
-      this.logger.debug('User has no password.', { phoneNumber: username });
-      throw new UnauthorizedException();
-    }
+    const authUser: AuthUser = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      password: user.password,
+    };
 
-    // If password is incorrect, kick user.
-    if (!this.hashService.compareHash(password, userFound.password)) {
-      this.logger.debug('Password does not match.', { phoneNumber: username });
-      throw new UnauthorizedException();
-    }
-
-    this.logger.debug('User authenticated successfully.', {
-      phoneNumber: username,
-    });
-
-    // All required data are available on access token payload.
-    return filterProperties(userFound, {
-      email: null,
-      id: null,
-      name: null,
-      password: null,
-    } as AuthUser);
+    return authUser;
   }
 }

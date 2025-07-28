@@ -1,18 +1,20 @@
+// apps/customers/src/infrastructure/nats/nats.constants.ts
+
 export const NATS_SERVICES = {
   USER: {
-    GET_BY_EMAIL: 'USERS.user.getByEmail',
-    UPDATE: 'USERS.user.update',
-    CREATE: 'USERS.user.create',
-    CHANGE_PASSWORD: 'USERS.user.changePassword',
-    GET_BY_ID: 'USERS.user.getById',
-    GET_ALL: 'USERS.user.getAll',
+    GET_BY_EMAIL: 'CUSTOMERS.user.getByEmail',
+    UPDATE: 'CUSTOMERS.user.update',
+    CREATE: 'CUSTOMERS.user.create',
+    CHANGE_PASSWORD: 'CUSTOMERS.user.changePassword',
+    GET_BY_ID: 'CUSTOMERS.user.getById',
+    GET_ALL: 'CUSTOMERS.user.getAll',
   },
 };
 
 export const NATS_EVENTS = {
   USER: {
-    UPDATED: 'USERS.user.event.updated',
-    CREATED: 'USERS.user.event.created',
-    UPDATED_PASSWORD: 'USERS.user.event.updatedPassword',
+    UPDATED: 'CUSTOMERS.user.event.updated',
+    CREATED: 'CUSTOMERS.user.event.created',
+    UPDATED_PASSWORD: 'CUSTOMERS.user.event.updatedPassword',
   },
 };

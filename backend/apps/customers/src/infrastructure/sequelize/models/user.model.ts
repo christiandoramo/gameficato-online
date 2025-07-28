@@ -23,7 +23,7 @@ import { StoreModel } from './store-stub.model ';
 export type UserAttributes = User;
 export type UserCreationAttributes = Pick<
   UserAttributes,
-  'name' | 'email' | 'password'
+  'name' | 'email' | 'password' | 'storeId'
 >;
 
 @Table({
