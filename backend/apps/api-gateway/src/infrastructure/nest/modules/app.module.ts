@@ -10,6 +10,7 @@ import { BcryptModule } from '@gameficato/common/modules/bcrypt.module';
 import { ValidationModule } from '@gameficato/common/modules/validation.module';
 import { AuthModule } from './auth.module';
 import { UserModule } from './user.module';
+import { RewardModule } from './reward.module';
 
 /**
  * API Users gateway module
@@ -26,6 +27,7 @@ import { UserModule } from './user.module';
     AuthModule,
     UserModule,
     TerminusModule,
+    RewardModule,
   ],
 })
 export class AppModule implements NestModule {

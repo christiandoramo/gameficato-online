@@ -9,6 +9,9 @@ export const NATS_SERVICES = {
     GET_BY_ID: 'CUSTOMERS.user.getById',
     GET_ALL: 'CUSTOMERS.user.getAll',
   },
+  REWARD: {
+    CREATE: 'CUSTOMERS.reward.create',
+  },
 };
 
 export const NATS_EVENTS = {
@@ -16,5 +19,8 @@ export const NATS_EVENTS = {
     UPDATED: 'CUSTOMERS.user.event.updated',
     CREATED: 'CUSTOMERS.user.event.created',
     UPDATED_PASSWORD: 'CUSTOMERS.user.event.updatedPassword',
+  },
+  REWARD: {
+    CREATED: 'CUSTOMERS.reward.event.created',
   },
 };

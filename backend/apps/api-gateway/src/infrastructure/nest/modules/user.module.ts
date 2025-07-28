@@ -1,3 +1,4 @@
+// apps/api-gateway/src/infrastructure/nest/modules/user.module.ts
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { BcryptModule } from '@gameficato/common/modules/bcrypt.module';

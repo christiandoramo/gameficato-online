@@ -1,3 +1,4 @@
+// apps/api-gateway/src/infrastructure/nest/controllers/auth/change_password.controller.ts
 import { Body, Controller, Logger, Post } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {

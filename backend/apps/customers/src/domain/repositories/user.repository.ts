@@ -1,3 +1,4 @@
+// apps/customers/src/domain/repositories/user.repository.ts
 import type { User } from '@gameficato/customers/domain/entities/user.entity';
 
 export type CreateUserData = Omit<User, 'createdAt'>;

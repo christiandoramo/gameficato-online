@@ -102,6 +102,7 @@ async function bootstrap() {
   // Set default pipes.
   app.useGlobalPipes(
     new ValidationPipe({
+      transform: true,
       whitelist: true,
       forbidNonWhitelisted: true,
       exceptionFactory: (errors: ValidationError[]) => {

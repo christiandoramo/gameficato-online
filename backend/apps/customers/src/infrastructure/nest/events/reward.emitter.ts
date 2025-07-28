@@ -1,25 +1,25 @@
-// apps/customers/src/infrastructure/nest/events/user.emitter.ts
+// apps/customers/src/infrastructure/nest/events/reward.emitter.ts
 import { Logger } from 'winston';
 import { NatsEventEmitter } from '@gameficato/common/interceptors/nats_event.interceptor';
 import { NatsMessage } from '@gameficato/common/helpers/nats_message.helper';
 import { NatsAddEvent } from '@gameficato/common/modules/rpc.module';
 import { NATS_EVENTS } from '@gameficato/customers/infrastructure/nats/nats.constants';
 import {
-  UserControllerEvent,
-  UserEventEmitterControllerInterface,
-  UserEventType,
-} from '@gameficato/customers/interface/events/user.emitter';
+  RewardControllerEvent,
+  RewardEventEmitterControllerInterface,
+  RewardEventType,
+} from '@gameficato/customers/interface/events/reward.emitter';
 
-const eventMapper = NATS_EVENTS.USER;
+const eventMapper = NATS_EVENTS.REWARD;
 
-type UserNatsEvent = NatsMessage<UserControllerEvent>;
+type RewardNatsEvent = NatsMessage<RewardControllerEvent>;
 
 /**
  * User microservice.
  */
 @NatsAddEvent(Object.values(eventMapper))
-export class UserEventNatsEmitter
-  implements UserEventEmitterControllerInterface
+export class RewardEventNatsEmitter
+  implements RewardEventEmitterControllerInterface
 {
   /**
    * Default constructor.
@@ -32,7 +32,7 @@ export class UserEventNatsEmitter
     private readonly eventEmitter: NatsEventEmitter,
     private readonly logger: Logger,
   ) {
-    this.logger = logger.child({ context: UserEventNatsEmitter.name });
+    this.logger = logger.child({ context: RewardEventNatsEmitter.name });
   }
 
   /**
@@ -40,15 +40,18 @@ export class UserEventNatsEmitter
    * @param eventName The event name.
    * @param event The event data.
    */
-  emitUserEvent(eventName: UserEventType, event: UserControllerEvent): void {
+  emitRewardEvent(
+    eventName: RewardEventType,
+    event: RewardControllerEvent,
+  ): void {
     // Request Nats message.
-    const data: UserNatsEvent = {
+    const data: RewardNatsEvent = {
       key: `${event.uuid}`,
       headers: { requestId: this.requestId },
       value: event,
     };
 
-    this.logger.debug('Emit User event.', { eventName, data });
+    this.logger.debug('Emit Reward event.', { eventName, data });
 
     // Call create PixDecodedAccount microservice.
     const result = this.eventEmitter.emit({
@@ -56,6 +59,6 @@ export class UserEventNatsEmitter
       data,
     });
 
-    this.logger.debug('User event emitted.', { result });
+    this.logger.debug('Reward event emitted.', { result });
   }
 }

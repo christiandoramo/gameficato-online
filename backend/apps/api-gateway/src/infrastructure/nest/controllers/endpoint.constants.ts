@@ -9,4 +9,7 @@ export const HTTP_ENDPOINTS = {
     UPDATE: 'users/:id',
     GET_BY_ID: 'users/:id',
   },
+  REWARD: {
+    CREATE: 'rewards',
+  },
 };
