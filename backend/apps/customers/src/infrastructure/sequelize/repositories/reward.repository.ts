@@ -10,10 +10,15 @@ export class RewardDatabaseRepository
   extends DatabaseRepository
   implements RewardRepository
 {
+  static toDomain(model: RewardModel | null): Reward | null {
+    return model?.toDomain() ?? null;
+  }
+
   async create(data: CreateRewardData): Promise<Reward> {
-    const created = await RewardModel.create(data, {
+    const createdReward = await RewardModel.create(data, {
       transaction: this.transaction,
+      returning: true,
     });
-    return created.get({ plain: true }) as Reward;
+    return createdReward.toDomain();
   }
 }

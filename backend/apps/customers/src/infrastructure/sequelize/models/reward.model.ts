@@ -8,7 +8,11 @@ import {
   ForeignKey,
 } from 'sequelize-typescript';
 import { UserModel } from './user.model';
-import { Reward } from '@gameficato/customers/domain/entities/reward.entity';
+import {
+  Reward,
+  RewardEntity,
+} from '@gameficato/customers/domain/entities/reward.entity';
+import { BuildOptions } from 'sequelize';
 // import { CouponModel } from './coupon.model';
 
 export type RewardAttributes = Reward;
@@ -48,4 +52,11 @@ export class RewardModel extends Model {
 
   @Column({ field: 'game_id', type: DataType.INTEGER, allowNull: false })
   gameId: number;
+
+  constructor(values?: RewardCreationAttributes, options?: BuildOptions) {
+    super(values, options);
+  }
+  toDomain(): Reward {
+    return new RewardEntity(this.get({ plain: true }));
+  }
 }
