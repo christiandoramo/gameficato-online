@@ -4,7 +4,10 @@ export interface User extends Domain<string> {
   name: string;
   email: string;
   password: string;
+  coins: number;
+  inGameCoins: number;
   storeId: string;
+  userRole: 'store_customer' | 'store_admin' | 'admin';
 }
 
 export class UserEntity implements User {

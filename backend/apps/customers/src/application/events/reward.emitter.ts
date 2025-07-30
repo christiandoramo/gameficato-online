@@ -6,5 +6,5 @@ export type RewardEvent = Pick<
 >;
 
 export interface RewardEventEmitter {
-  rewardCreated(event: RewardEvent): void;
+  createdReward(event: RewardEvent): void;
 }

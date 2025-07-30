@@ -37,6 +37,6 @@ func ConnectAndMigrate() (*gorm.DB, error) {
 		return nil, err
 	}
 
-	log.Println("✅ Banco migrado com GORM!")
+	log.Println("Banco migrado com GORM")
 	return db, nil
 }

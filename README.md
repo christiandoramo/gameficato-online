@@ -1,5 +1,15 @@
 # gameficato-online
 
+## Como rodar
+clonar e abrir o repositorio
+Forma mais manual: em 3 terminais (copiar e rodar o comando abaixo)
+cd backend;
+docker-compose --profile local up -d;
+cd ../backend-games;
+docker-compose up -d
+cd ../frontend
+docker-compose up -d
+
 ### Artefatos
 
 * Protótipo do Frontend padrão: https://www.figma.com/design/YFaFwXm3tdsyajZ61WOTVj/Gameficato-Online?node-id=0-1&t=Ap0kAoGu79AUt2qL-1 
@@ -27,7 +37,7 @@ _ER do Banco de dados do serviço original (sem a divisão em microsserviços): 
  * * No MVP os jogos são pré-definidos - sem deploy de cada jogo
  * * Recompensam com moedas que podem ser usadas como desconto em produtos
  * * Recompensam com moedas in-game que permitem compra para ajuda nos resultados em jogadas
- * * Sorteiam cupom com chance de drop baseado em peso de 0.01 a 100 por cupom para cada jogo 
+ * * Sorteiam cupom com chance de drop baseado em peso de 0.01 a 100 por cupom para cada jogo
 
 ### Requisitos funcionais
 

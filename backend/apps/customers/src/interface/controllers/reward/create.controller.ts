@@ -11,6 +11,7 @@ import {
   RewardEventEmitterController,
   RewardEventEmitterControllerInterface,
 } from '../../events/reward.emitter';
+import { UserRepository } from '@gameficato/customers/domain/repositories/user.repository';
 
 export type TCreateRewardRequest = Pick<
   Reward,
@@ -76,14 +77,20 @@ export class CreateRewardController {
   private readonly usecase: CreateRewardUseCase;
   constructor(
     private readonly logger: Logger,
-    repo: RewardRepository,
+    repoReward: RewardRepository,
+    repoUser: UserRepository,
     emitter: RewardEventEmitterControllerInterface,
   ) {
     this.logger = logger.child({ context: CreateRewardController.name });
 
     const rewardEventEmitter = new RewardEventEmitterController(emitter);
 
-    this.usecase = new CreateRewardUseCase(logger, repo, rewardEventEmitter);
+    this.usecase = new CreateRewardUseCase(
+      logger,
+      repoReward,
+      repoUser,
+      rewardEventEmitter,
+    );
   }
 
   async execute(request: CreateRewardRequest): Promise<CreateRewardResponse> {

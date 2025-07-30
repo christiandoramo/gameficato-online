@@ -1,12 +1,23 @@
 package checkin
 
-import "time"
+import (
+	"time"
 
+	"github.com/christiandoramo/gameficato-online/internal/clients"
+)
+
+//	type CheckInResponse struct {
+//		Message       string `json:"message"`
+//		CoinsReceived int    `json:"coinsReceived"`
+//		Status        string `json:"status"`
+//		Sequence      int    `json:"sequence"`
+//	}
 type CheckInResponse struct {
-	Message       string `json:"message"`
-	CoinsReceived int    `json:"coinsReceived"`
-	Status        string `json:"status"`   // "receivedNow", "waitToReceive", "error"
-	Sequence      int    `json:"sequence"` // dias consecutivos
+	Message       string                  `json:"message"`
+	CoinsReceived int                     `json:"coinsReceived"`
+	Status        string                  `json:"status"`
+	Sequence      int                     `json:"sequence"`
+	Reward        *clients.RewardResponse `json:"reward,omitempty"`
 }
 
 type CalendarDay struct {

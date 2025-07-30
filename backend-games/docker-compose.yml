@@ -1,0 +1,17 @@
+services:
+  db:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    command: [ 'postgres', '-c', 'log_statement=all', '-c', 'log_destination=stderr']
+    hostname: db
+    restart: unless-stopped
+    ports:
+      - '5433:5432'
+    environment:
+      POSTGRES_USER: ${DB_USER:?DB_USER env var is missing on .env file}
+      POSTGRES_DB: ${DB_NAME:?DB_NAME env var is missing on .env file}
+      POSTGRES_PASSWORD: ${DB_PASS:?DB_PASS env var is missing on .env file}
+
+volumes:
+  db_data:

@@ -1,3 +1,4 @@
+// apps/api-gateway/src/infrastructure/nest/modules/app.module.ts
 import { Logger, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TerminusModule } from '@nestjs/terminus';
@@ -12,9 +13,6 @@ import { AuthModule } from './auth.module';
 import { UserModule } from './user.module';
 import { RewardModule } from './reward.module';
 
-/**
- * API Users gateway module
- */
 @Module({
   providers: [Logger],
   imports: [

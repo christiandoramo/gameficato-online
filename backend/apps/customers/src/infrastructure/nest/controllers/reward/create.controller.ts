@@ -23,6 +23,7 @@ import {
 import { RewardEventNatsEmitter } from '../../events/reward.emitter';
 import { NATS_SERVICES } from '@gameficato/customers/infrastructure/nats/nats.constants';
 import { LoggerParam } from '@gameficato/common';
+import { UserDatabaseRepository } from '@gameficato/customers/infrastructure/sequelize/repositories/user.repository';
 
 export type CreateRewardNatsRequest = NatsMessage<CreateRewardRequest>;
 export type CreateRewardNatsResponse = NatsResponse<CreateRewardResponse>;
@@ -32,16 +33,26 @@ export type CreateRewardNatsResponse = NatsResponse<CreateRewardResponse>;
 export class CreateRewardMicroserviceController {
   @NatsMessagePattern(NATS_SERVICES.REWARD.CREATE)
   async execute(
-    @RepositoryParam(RewardDatabaseRepository) repo,
+    @RepositoryParam(RewardDatabaseRepository) repoRewawrd,
+    @RepositoryParam(UserDatabaseRepository) repoUser,
     @EventEmitterParam(RewardEventNatsEmitter) emitter,
     @LoggerParam(CreateRewardMicroserviceController) logger: Logger,
     @Payload() msg: CreateRewardRequest,
     @Ctx() ctx: NatsContext,
   ): Promise<CreateRewardNatsResponse> {
     logger.debug('Received create reward', { msg });
-    const controller = new ICreateRewardController(logger, repo, emitter);
-    const request = new CreateRewardRequest(msg);
-    const reward = await controller.execute(request);
+    const controller = new ICreateRewardController(
+      logger,
+      repoRewawrd,
+      repoUser,
+      emitter,
+    );
+    const payload = new CreateRewardRequest(msg);
+    logger.info('payload: ', { payload });
+    const reward = await controller.execute(payload);
+
+    logger.info('reward created: ', { reward });
+
     return { value: reward, ctx };
   }
 }

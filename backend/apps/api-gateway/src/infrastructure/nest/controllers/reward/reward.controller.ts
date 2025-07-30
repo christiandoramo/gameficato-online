@@ -1,4 +1,5 @@
 // apps/api-gateway/src/infrastructure/nest/controllers/reward/reward.controller.ts
+
 import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
 import {
   ApiTags,
@@ -16,10 +17,30 @@ import {
   CreateRewardRequest as DomainCreateRewardRequest,
   CreateRewardResponse,
 } from '@gameficato/customers/interface/controllers/reward/create.controller';
-import { CreateRewardDto } from './dto/create-reward.dto';
+import { Type } from 'class-transformer';
+import { IsUUID, IsInt, Min } from 'class-validator';
 
-@ApiTags('Rewards')
-@Controller(HTTP_ENDPOINTS.REWARD.CREATE) // 'rewards'
+class CreateRewardDto {
+  @Type(() => Number)
+  @IsInt()
+  @Min(0)
+  coins: number;
+
+  @Type(() => Number)
+  @IsInt()
+  @Min(0)
+  inGameCoins: number;
+
+  @IsUUID()
+  userId: string;
+
+  @Type(() => Number)
+  @IsInt()
+  gameId: number;
+}
+
+@ApiTags('Recompensas')
+@Controller(HTTP_ENDPOINTS.REWARD.CREATE)
 export class RewardRestController {
   @Post()
   @ApiBearerAuth()
@@ -42,10 +63,10 @@ export class RewardRestController {
       gameId: body.gameId,
     };
 
-    const reward = await createRewardService.execute(payload);
+    const result = await createRewardService.execute(payload);
 
-    logger.debug('Reward created via NATS.', { reward });
+    logger.debug('Reward created via NATS.', { result });
 
-    return new CreateRewardResponse(reward);
+    return new CreateRewardResponse(result);
   }
 }

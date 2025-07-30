@@ -43,7 +43,7 @@ export class UserEventNatsEmitter
   emitUserEvent(eventName: UserEventType, event: UserControllerEvent): void {
     // Request Nats message.
     const data: UserNatsEvent = {
-      key: `${event.uuid}`,
+      key: `${this.requestId}`,
       headers: { requestId: this.requestId },
       value: event,
     };

@@ -1,3 +1,4 @@
+// backend-games/internal/handlers/checkin/handler.go
 package checkin
 
 import (
@@ -25,7 +26,6 @@ func RegisterRoutes(r *gin.Engine, gormDB *gorm.DB) {
 
 func handleDoCheckIn(svc *Service) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// 1) faz bind do JSON
 		var req checkInRequest
 		if err := c.ShouldBindJSON(&req); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
@@ -35,7 +35,6 @@ func handleDoCheckIn(svc *Service) gin.HandlerFunc {
 			return
 		}
 
-		// 2) parse do UUID
 		userID, err := uuid.Parse(req.UserID)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
@@ -45,7 +44,6 @@ func handleDoCheckIn(svc *Service) gin.HandlerFunc {
 			return
 		}
 
-		// 3) delega para o service
 		resp, err := svc.DoCheckIn(userID)
 		if err != nil && resp.Status == "error" {
 			c.JSON(http.StatusInternalServerError, resp)
@@ -56,7 +54,6 @@ func handleDoCheckIn(svc *Service) gin.HandlerFunc {
 	}
 }
 
-// para manter o GET calendar usando path, sem alterações
 func handleGetCalendar(svc *Service) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		userID, err := uuid.Parse(c.Param("userId"))

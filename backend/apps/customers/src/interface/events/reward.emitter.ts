@@ -79,14 +79,8 @@ export class RewardEventEmitterController implements RewardEventEmitter {
   //   const controllerEvent = this.formatData(event);
   //   this.eventEmitter.emitRewardEvent(RewardEventType.CREATED, controllerEvent);
   // }
-  rewardCreated(event: RewardEvent): void {
-    const controllerEvent = new RewardControllerEvent({
-      id: event.id,
-      coins: event.coins,
-      inGameCoins: event.inGameCoins,
-      userId: event.userId,
-      gameId: event.gameId,
-    });
+  createdReward(event: RewardEvent): void {
+    const controllerEvent = this.formatData(event);
     this.eventEmitter.emitRewardEvent(RewardEventType.CREATED, controllerEvent);
   }
   /** Formata os dados de domínio para o DTO de evento. */

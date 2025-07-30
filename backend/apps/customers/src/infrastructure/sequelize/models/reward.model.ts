@@ -23,8 +23,10 @@ export type RewardCreationAttributes = Pick<
 
 @Table({
   tableName: 'rewards',
-  timestamps: false, // vamos controlar só created_at
-  underscored: true, // força snake_case
+  timestamps: true,
+  underscored: true,
+  createdAt: 'created_at',
+  updatedAt: false,
 })
 export class RewardModel extends Model {
   @PrimaryKey
@@ -47,7 +49,7 @@ export class RewardModel extends Model {
   //   couponId: string | null;
 
   @CreatedAt
-  @Column({ field: 'created_at', type: DataType.DATE, allowNull: false })
+  @Column({ field: 'created_at', type: DataType.DATE })
   createdAt: Date;
 
   @Column({ field: 'game_id', type: DataType.INTEGER, allowNull: false })

@@ -74,7 +74,12 @@ export class UserModel
   inGameCoins: number;
 
   @ForeignKey(() => StoreModel) // supondo que haja um StoreModel
-  @Column({ field: 'store_id', type: DataType.UUID, allowNull: false })
+  @Column({
+    defaultValue: 'a1b2c3d4-e5f6-7890-abcd-ef0123456789', // MERCATO ONLINE - mvp
+    field: 'store_id',
+    type: DataType.UUID,
+    allowNull: false,
+  })
   storeId: string;
 
   @Column({

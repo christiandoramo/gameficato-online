@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/christiandoramo/gameficato-online/internal/clients"
+	"github.com/christiandoramo/gameficato-online/internal/config"
 	"github.com/christiandoramo/gameficato-online/internal/models"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -22,29 +24,22 @@ const (
 // var (rewardsURL = fmt.Sprintf("%s/rewards", os.Getenv("CORE_BACKEND_URL")))
 
 type Service struct {
-	db *gorm.DB
+	db           *gorm.DB
+	rewardClient *clients.RewardClient
 }
 
 func NewService(db *gorm.DB) *Service {
-	return &Service{db: db}
+	baseURL := config.Load().CoreBackendUrl
+
+	return &Service{db: db,
+		rewardClient: clients.NewRewardClient(baseURL),
+	}
 }
 
-//	go func() {
-//		body := map[string]interface{}{
-//			"coins":       coins,
-//			"inGameCoins": coins,
-//			"userId":      userID.String(),
-//			"couponId":    nil,
-//			"gameId":      gameplayID,
-//		}
-//		b, _ := json.Marshal(body)
-//		http.Post(rewardsURL, "application/json", bytes.NewBuffer(b))
-//	}()
 func (s *Service) DoCheckIn(userID uuid.UUID) (CheckInResponse, error) {
 	now := time.Now()
 	start := now.Add(-interval)
 
-	// Verifica se já fez check-in nesse intervalo
 	var recent models.CheckIn
 	if err := s.db.
 		Where("user_id = ? AND created_at >= ?", userID, start).
@@ -58,66 +53,69 @@ func (s *Service) DoCheckIn(userID uuid.UUID) (CheckInResponse, error) {
 		}, nil
 	}
 
-	// Busca sequência ativa
-	var seq models.Sequence
-	err := s.db.
-		Where("user_id = ? AND ended_at IS NULL", userID).
-		Order("started_at DESC").
-		First(&seq).Error
+	var finalResp CheckInResponse
 
-	// Verifica se deve criar nova sequência
-	if err != nil || isSequenceExpired(s.db, seq.ID, now) {
-		if err == nil {
-			// Finaliza sequência antiga
-			end := now
-			s.db.Model(&seq).Update("ended_at", &end)
-		}
-		// Cria nova sequência
-		seq = models.Sequence{
-			ID:        uuid.New(),
-			UserID:    userID,
-			StartedAt: now,
-		}
-		if err := s.db.Create(&seq).Error; err != nil {
-			return CheckInResponse{
-				Message:       "Erro ao iniciar nova sequência.",
-				CoinsReceived: 0,
-				Status:        "error",
-				Sequence:      0,
-			}, err
-		}
-	}
+	// transaction evita que crie nesse banco do GO e não crie no banco do NESTJS
+	err := s.db.Transaction(func(tx *gorm.DB) error {
+		// 3.1) Sequência
+		var seq models.Sequence
+		err := tx.
+			Where("user_id = ? AND ended_at IS NULL", userID).
+			Order("started_at DESC").
+			First(&seq).Error
 
-	// Cria o check-in associado à sequência
-	checkin := models.CheckIn{
-		ID:         uuid.New(),
-		UserID:     userID,
-		SequenceID: seq.ID,
-		CreatedAt:  now,
-	}
-	if err := s.db.Create(&checkin).Error; err != nil {
+		if err != nil || isSequenceExpired(tx, seq.ID, now) {
+			if err == nil {
+				tx.Model(&seq).Update("ended_at", &now)
+			}
+			seq = models.Sequence{ID: uuid.New(), UserID: userID, StartedAt: now}
+			if err := tx.Create(&seq).Error; err != nil {
+				return err
+			}
+		}
+
+		// check-in
+		chk := models.CheckIn{ID: uuid.New(), UserID: userID, SequenceID: seq.ID, CreatedAt: now}
+		if err := tx.Create(&chk).Error; err != nil {
+			return err
+		}
+
+		// contando
+		var count int64
+		if err := tx.Model(&models.CheckIn{}).
+			Where("sequence_id = ?", seq.ID).
+			Count(&count).Error; err != nil {
+			return err
+		}
+		coins := baseCoins + int(count-1)*coinsStep
+
+		rewardReq := clients.RewardRequest{Coins: coins, InGameCoins: coins, UserID: userID.String(), GameID: gameplayID}
+		rewardResp, err := s.rewardClient.Create(rewardReq)
+		if err != nil {
+			return err
+		}
+
+		finalResp = CheckInResponse{
+			Message:       fmt.Sprintf("Check-in realizado! Você ganhou %d moedas.", coins),
+			CoinsReceived: coins,
+			Status:        "receivedNow",
+			Sequence:      int(count),
+			Reward:        rewardResp,
+		}
+		return nil
+	})
+
+	if err != nil { // se não ocorreu corretamente, ou teve rollback
 		return CheckInResponse{
-			Message:       "Erro ao registrar check-in.",
+			Message:       "Erro ao fazer check‑in: " + err.Error(),
 			CoinsReceived: 0,
 			Status:        "error",
 			Sequence:      0,
-		}, err
+		}, nil
 	}
 
-	// Conta a posição na sequência
-	var count int64
-	s.db.Model(&models.CheckIn{}).
-		Where("sequence_id = ?", seq.ID).
-		Count(&count)
-
-	coins := baseCoins + int(count-1)*coinsStep
-
-	return CheckInResponse{
-		Message:       fmt.Sprintf("Check-in realizado! Você ganhou %d moedas.", coins),
-		CoinsReceived: coins,
-		Status:        "receivedNow",
-		Sequence:      int(count),
-	}, nil
+	// 5) Commit ocorreu, retorna finalResp
+	return finalResp, nil
 }
 
 func (s *Service) GetCalendar(userID uuid.UUID) (CalendarCheckIn, error) {

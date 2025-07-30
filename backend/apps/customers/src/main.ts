@@ -22,7 +22,7 @@ async function bootstrap() {
 
   // Get nats client configuration.
   const configService = app.get(ConfigService);
-  const appPort = configService.get<number>('APP_PORT', 3000);
+  //const appPort = configService.get<number>('APP_PORT', 3000);
   const logger: Logger = app.get(LOGGER_SERVICE);
 
   // Set default logger.
@@ -43,9 +43,9 @@ async function bootstrap() {
 
   await service.listen();
 
-  await app.listen(appPort);
+  //await app.listen(appPort);
 
-  logger.info('Microservice HTTP successfully started.', { appPort });
+  logger.info('Microservice NATS successfully started');
 }
 
 bootstrap().catch((error) => shutdown(app, error));

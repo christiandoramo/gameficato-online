@@ -46,7 +46,7 @@ export class RewardEventNatsEmitter
   ): void {
     // Request Nats message.
     const data: RewardNatsEvent = {
-      key: `${event.uuid}`,
+      key: `${this.requestId}`,
       headers: { requestId: this.requestId },
       value: event,
     };
