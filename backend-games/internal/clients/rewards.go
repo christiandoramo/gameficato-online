@@ -1,3 +1,4 @@
+// internal/clients/rewards.go
 package clients
 
 import (
@@ -32,42 +33,35 @@ type RewardResponse struct {
 type RewardClient struct {
 	BaseURL    string
 	HTTPClient *http.Client
+	Token      string
 }
 
 func NewRewardClient(baseURL string) *RewardClient {
 	return &RewardClient{
-		BaseURL: baseURL,
-		HTTPClient: &http.Client{
-			Timeout: 5 * time.Second,
-		},
+		BaseURL:    baseURL,
+		HTTPClient: &http.Client{Timeout: 5 * time.Second},
 	}
 }
 
-func (c *RewardClient) Create(req RewardRequest) (*RewardResponse, error) {
-	b, err := json.Marshal(req)
-	if err != nil {
-		return nil, err
-	}
-
+func (c *RewardClient) Create(reqBody RewardRequest) (*RewardResponse, error) {
+	b, _ := json.Marshal(reqBody)
 	url := fmt.Sprintf("%s/rewards", c.BaseURL)
-	httpReq, err := http.NewRequest("POST", url, bytes.NewBuffer(b))
-	if err != nil {
-		return nil, err
-	}
-	httpReq.Header.Set("Content-Type", "application/json")
+	req, _ := http.NewRequest("POST", url, bytes.NewBuffer(b))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+c.Token)
 
-	resp, err := c.HTTPClient.Do(httpReq)
+	resp, err := c.HTTPClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
 
-	var rewardResp RewardResponse
-	if err := json.NewDecoder(resp.Body).Decode(&rewardResp); err != nil {
+	var rr RewardResponse
+	if err := json.NewDecoder(resp.Body).Decode(&rr); err != nil {
 		return nil, err
 	}
-	if !rewardResp.Success {
-		return &rewardResp, fmt.Errorf("recompensa falhou: %s", rewardResp.Message)
+	if !rr.Success {
+		return &rr, fmt.Errorf("recompensa não feita: %s", rr.Message)
 	}
-	return &rewardResp, nil
+	return &rr, nil
 }

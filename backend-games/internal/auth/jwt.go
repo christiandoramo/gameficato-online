@@ -1,3 +1,5 @@
+// futuramente terá a prórpia autenticação, mas vou usar junto com a de mercato online por enquanto
+
 package auth
 
 import (
@@ -6,14 +8,12 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-// ClaimsPayload deve bater com o que o NestJS espera (id + version).
 type ClaimsPayload struct {
 	ID      string `json:"id"`
 	Version int    `json:"version"`
 	jwt.RegisteredClaims
 }
 
-// GenerateToken monta um JWT HS256 com secret chave e version.
 func GenerateToken(userID, secret string, version int) (string, error) {
 	now := time.Now().UTC()
 	claims := ClaimsPayload{

@@ -1,3 +1,4 @@
+// backend-games/internal/handlers/checkin/types.go
 package checkin
 
 import (
@@ -6,12 +7,6 @@ import (
 	"github.com/christiandoramo/gameficato-online/internal/clients"
 )
 
-//	type CheckInResponse struct {
-//		Message       string `json:"message"`
-//		CoinsReceived int    `json:"coinsReceived"`
-//		Status        string `json:"status"`
-//		Sequence      int    `json:"sequence"`
-//	}
 type CheckInResponse struct {
 	Message       string                  `json:"message"`
 	CoinsReceived int                     `json:"coinsReceived"`
