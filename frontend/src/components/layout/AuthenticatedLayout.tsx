@@ -7,6 +7,7 @@ import {
 } from "@ant-design/icons";
 import { useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { unsetAuthorizationToken } from "@/lib/api/auth";
 const { Sider, Content } = Layout;
 const { Text } = Typography;
 
@@ -99,7 +100,8 @@ export default function AuthenticatedLayout() {
             danger
             style={{ marginTop: 8, width: "100%" }}
             onClick={() => {
-              /* logout */
+              unsetAuthorizationToken();
+              navigate("/")
             }}
           >
             {!collapsed && "Sair"}

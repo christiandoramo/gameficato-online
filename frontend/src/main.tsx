@@ -1,5 +1,5 @@
 // frontend/src/main.tsx
-import 'antd/dist/reset.css';
+// import 'antd/dist/reset.css';
 import "./index.css";
 import App from "./App";
 import { GlobalProvider } from "./lib/contexts/globalContext";
