@@ -5,7 +5,7 @@
 1. clonar e abrir o repositorio: https://github.com/christiandoramo/gameficato-online.git 
 
 
-2. deve estar na raíz do projeto e abrir 4 terminais, e rode no primeiro terminal  (só funciona com docker, docker compose e node instalado):
+2. deve estar na raíz do projeto cirar os .env a partir dos .env.examples, e abrir 4 terminais, e rode no primeiro terminal  (só funciona com docker, docker compose e node instalado):
 
 ```
 cd backend;
