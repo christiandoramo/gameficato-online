@@ -3,8 +3,8 @@ export interface UserType {
   name: string;
   email: string;
   coins: number;
-  userRole: 'storeCustomer' | 'storeAdmin';
+  // userRole: 'storeCustomer' | 'storeAdmin';
   storeId: string;
-  inGameCoins: number;
-  createdAt: Date;
+  // inGameCoins: number;
+  // createdAt: Date;
 }

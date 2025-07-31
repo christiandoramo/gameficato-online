@@ -35,6 +35,9 @@ export default function GameCheckIn() {
   const [checking, setChecking] = useState(false);
 
   const userId = user?.id || getUserId();
+    const storeId = user?.storeId;
+    const email = user?.email
+
   const gameId = 1;
 
   /** busca o calendário */
@@ -42,15 +45,15 @@ export default function GameCheckIn() {
     setLoadingCal(true);
     try {
       const data = await request<CalendarResponse>(
-        `${URL_GAMEPLAY}/${gameId}/${userId}/calendar`,
+        `${URL_GAMEPLAY}/gameplay/${gameId}/${userId}/calendar`,
         MethodsEnum.GET
       );
       setCalendar(data?.calendarDays.slice(0, 30) ?? []);
     } catch {
       // placeholder: 30 dias com 0 moedas
-      const placeholder: CalendarDay[] = Array.from({ length: 30 }).map((i, j) => ({
+      const placeholder: CalendarDay[] = Array.from({ length: 30 }).map((_, i) => ({
         coins: 0,
-        day: j +"",//new Date().toISOString(),
+        day: new Date().toISOString(),
         received: false,
       }));
       setCalendar(placeholder);
@@ -64,13 +67,13 @@ export default function GameCheckIn() {
     setChecking(true);
     try {
       const res = await request<CheckInResponse>(
-        `${URL_GAMEPLAY}/${gameId}`,
+        `${URL_GAMEPLAY}/gameplay/${gameId}`,
         MethodsEnum.POST,
         undefined,
         {
           userId,
-          email: user?.email,
-          storeId: user?.storeId,
+          email,
+          storeId,
         }
       );
       Modal.info({
@@ -89,14 +92,15 @@ export default function GameCheckIn() {
 
   return (
     <div className="flex flex-col items-center justify-start flex-1 overflow-auto bg-gray-100 p-8">
+      <h2>Faça Check-in de 30 em 30 seg para ganhar moedas de desconto</h2>
       {/* Card de CheckIn */}
-      <div className="w-full max-w-lg bg-white dark:bg-neutral-800 p-8 rounded shadow-md text-center">
+      <div className="w-full max-w-lg bg-white bg-neutral-800 p-8 rounded shadow-md text-center">
         <h2 className="text-3xl font-bold mb-4">Check-in Diário</h2>
         <p className="mb-6">Clique para receber suas moedas do dia!</p>
         <Button
-          onClick={handleCheckIn}
+          onClick={() =>handleCheckIn ()}
           disabled={checking}
-          className="px-6 py-2 text-lg"
+          className="bg-neutral-800 px-6 py-2 text-lg"
         >
           {checking ? "Carregando..." : "Fazer Check-in"}
         </Button>

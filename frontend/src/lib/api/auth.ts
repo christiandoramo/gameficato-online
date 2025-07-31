@@ -15,9 +15,7 @@ export interface LoginApiResponse {
 }
 
 export interface UserApiResponse {
-  data: {
-    user: UserType;
-  };
+  data: UserType;
   error: Error | null;
   success: boolean;
 }
@@ -60,7 +58,7 @@ export async function verifyLoggedIn(): Promise<UserType | null> {
     if (!!res?.data) {
       setAuthrizationToken(token);
       setUserId(userId);
-      return res?.data?.user;
+      return res?.data;
     }
   } catch {
     unsetAuthorizationToken();

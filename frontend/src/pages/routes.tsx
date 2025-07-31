@@ -3,7 +3,7 @@ import type { RouteObject } from "react-router-dom";
 
 import Login from "./login";
 import Home from "./home";
-import Gameplay from "./gameplay";
+import GameCheckIn from "@/games/GameCheckIn";
 // import Layout from "@/components/layout";
 import AuthenticatedLayout from "@/components/layout/AuthenticatedLayout";
 
@@ -46,7 +46,7 @@ export const homeRoutes: RouteObject[] = [
     element: <AuthenticatedLayout />,
     children: [
       { path: "", element: <Home /> },
-      { path: gameplayRoutesEnum.GAMEPLAY+"/:gameId", element: <Gameplay /> },
+      { path: gameplayRoutesEnum.GAMEPLAY+"/:gameId", element: <GameCheckIn /> },
     ],
   },
 ];

@@ -26,7 +26,7 @@ export class GetUserByIdRequest
   }
 }
 
-type TGetUserByIdResponse = Pick<User, 'id' | 'email' | 'name'>;
+type TGetUserByIdResponse = Pick<User, 'id' | 'email' | 'name' | 'storeId'>;
 
 export class GetUserByIdResponse
   extends AutoValidator
@@ -49,6 +49,9 @@ export class GetUserByIdResponse
   @IsNumber()
   coins: number;
 
+  @IsUUID()
+  storeId: string;
+
   constructor(props: TGetUserByIdResponse) {
     super(
       filterProperties(props, {
@@ -57,6 +60,7 @@ export class GetUserByIdResponse
         name: null,
         // password: null,
         coins: null,
+        storeId: null,
       } as TGetUserByIdResponse),
     );
   }

@@ -114,6 +114,7 @@ export default function AuthenticatedLayout() {
           marginLeft: siderWidth,
           width: `calc(100% - ${siderWidth})`,
           minHeight: "100vh",
+          minWidth: "80%",
         }}
       >
         <Content

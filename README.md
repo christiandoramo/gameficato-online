@@ -1,5 +1,9 @@
 # gameficato-online
 
+### Postman
+
+Link: https://api.postman.com/collections/34623665-5739ab7a-8527-4957-99bb-688efac31352?access_key=PMAT-01K1G5ZKQWQ0WE9FSCAXJEVZWK 
+
 ## Como rodar (maneira manual - sem run automatico com docker-compose)
 
 1. clonar e abrir o repositorio: https://github.com/christiandoramo/gameficato-online.git 

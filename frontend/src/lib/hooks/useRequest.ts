@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { homeRoutesEnum } from "@/pages/routes";
 import { ERROR_INVALID_PASSWORD } from "@/lib/utils/error-status";
-import { URL_AUTH } from "@/lib/api/base-urls";
+import { URL_AUTH,  } from "@/lib/api/base-urls";
 import { setAuthrizationToken, setUserId, type LoginApiResponse } from "@/lib/api/auth";
 import ConnectionAPI, {
   connectionAPIPost,
@@ -22,25 +22,22 @@ export const useRequest = () => {
   ): Promise<void> => {
     setLoading(true);
 
-    await connectionAPIPost<LoginApiResponse>(`${URL_AUTH}/signin`, body)
-      .then((res) => {
-        console.log("login res: ", res);
-        //setUser(res.user);
-        setAuthrizationToken(res?.data?.access_token);
-        setUserId(res?.data?.userId)
-        return res;
-      })
-      .catch(() => {
-        setNotification(ERROR_INVALID_PASSWORD, "error");
-        return undefined;
-      })
-      .finally(() => {
-        navigate(homeRoutesEnum.HOME);
-      });
+    try {
+      // 1) faz o login e guarda token + userId
+      const res = await connectionAPIPost<LoginApiResponse>(
+        `${URL_AUTH}/signin`,
+        body
+      );
+      setAuthrizationToken(res.data.access_token);
+      setUserId(res.data.userId);
 
-    setLoading(false);
+      navigate(homeRoutesEnum.HOME);
+    } catch (err: any) {
+      setNotification(ERROR_INVALID_PASSWORD, "error");
+    } finally {
+      setLoading(false);
+    }
   };
-
   const request = async <T>(
     url: string,
     method: MethodType,
