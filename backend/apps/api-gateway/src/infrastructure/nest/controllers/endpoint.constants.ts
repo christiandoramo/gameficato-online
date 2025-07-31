@@ -8,8 +8,13 @@ export const HTTP_ENDPOINTS = {
     CREATE: 'users',
     UPDATE: 'users/:id',
     GET_BY_ID: 'users/:id',
+    GET_ALL: 'users',
   },
   REWARD: {
     CREATE: 'rewards',
+    GET_ALL: 'rewards',
+  },
+  STORE: {
+    GET_ALL: 'stores',
   },
 };

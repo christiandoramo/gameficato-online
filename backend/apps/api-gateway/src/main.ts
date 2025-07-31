@@ -151,6 +151,7 @@ function openapi() {
     swaggerOptions: { persistAuthorization: true },
   };
 
+  console.log('INICIANDO: API-GATEWAY');
   SwaggerModule.setup('api', app, document, customOptions);
 }
 

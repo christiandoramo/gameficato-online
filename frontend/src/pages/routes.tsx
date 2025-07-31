@@ -4,7 +4,8 @@ import type { RouteObject } from "react-router-dom";
 import Login from "./login";
 import Home from "./home";
 import Gameplay from "./gameplay";
-import Layout from "@/components/layout";
+// import Layout from "@/components/layout";
+import AuthenticatedLayout from "@/components/layout/AuthenticatedLayout";
 
 export const loginRoutesEnum = {
   LOGIN: "/login",
@@ -25,16 +26,27 @@ export const loginRoutes: RouteObject[] = [
   },
 ];
 
+// export const homeRoutes: RouteObject[] = [
+//   {
+//     path: homeRoutesEnum.HOME,
+//     element: <AuthenticatedLayout />,
+//     children: [
+//       {
+//         path: "",
+//         element: <Home />,
+//       },
+//       { path: gameplayRoutesEnum.GAMEPLAY, element: <Gameplay /> },
+//     ],
+//   },
+// ];
+
 export const homeRoutes: RouteObject[] = [
   {
     path: homeRoutesEnum.HOME,
-    element: <Layout />,
+    element: <AuthenticatedLayout />,
     children: [
-      {
-        path: "",
-        element: <Home />,
-      },
-      { path: gameplayRoutesEnum.GAMEPLAY, element: <Gameplay /> },
+      { path: "", element: <Home /> },
+      { path: gameplayRoutesEnum.GAMEPLAY+"/:gameId", element: <Gameplay /> },
     ],
   },
 ];

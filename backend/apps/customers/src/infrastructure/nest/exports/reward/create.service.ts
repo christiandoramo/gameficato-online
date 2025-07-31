@@ -32,7 +32,7 @@ export class CreateRewardServiceNats {
       headers: { requestId: this.requestId },
       value: payload,
     };
-    console.log("envia aqui viA nats");
+    console.log('envia aqui viA nats');
     logger.debug('Send create reward message.', { data });
 
     const result = await this.natsService.send<

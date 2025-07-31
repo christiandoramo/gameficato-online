@@ -11,11 +11,8 @@ import {
 } from '@gameficato/common';
 import { CreateRewardMicroserviceController } from '../controllers/reward/create.controller';
 import { RewardModel } from '../../sequelize/models/reward.model';
-import { RewardDatabaseRepository } from '../../sequelize/repositories/reward.repository';
-import { UserDatabaseRepository } from '../../sequelize/repositories/user.repository';
 import { UserModule } from './user.module';
 import { RewardEventNatsEmitter } from '../events/reward.emitter';
-import { RewardEventEmitterController } from '@gameficato/customers/interface/events/reward.emitter';
 
 @Module({
   imports: [

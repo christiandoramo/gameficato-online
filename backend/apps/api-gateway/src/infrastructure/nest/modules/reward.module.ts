@@ -17,7 +17,6 @@ import { ConfigModule } from '@nestjs/config';
     NatsModule.forFeature([CreateRewardServiceNats]),
     BcryptModule,
     ValidationModule,
-
   ],
   controllers: [RewardRestController],
 })

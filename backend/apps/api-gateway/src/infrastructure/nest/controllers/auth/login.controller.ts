@@ -64,6 +64,12 @@ export class AuthenticateRestRequest {
 class AuthenticateRestResponse {
   @ApiProperty({
     type: 'string',
+    description: 'Id do usuário',
+  })
+  userId: string;
+
+  @ApiProperty({
+    type: 'string',
     description:
       'JWT access token. Token used to access all protected endpoints.',
   })
@@ -131,6 +137,7 @@ export class LoginAuthRestController {
     logger.debug('User access token created.', { user });
 
     return {
+      userId: user.id,
       access_token: accessToken,
     };
   }

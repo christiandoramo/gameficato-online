@@ -41,6 +41,7 @@ async function bootstrap() {
     createNatsTransport(configService, logger),
   );
 
+  console.log('INICIANDO: CUSTOMERS');
   await service.listen();
 
   //await app.listen(appPort);

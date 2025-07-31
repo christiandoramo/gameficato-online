@@ -12,6 +12,7 @@ import { ValidationModule } from '@gameficato/common/modules/validation.module';
 import { AuthModule } from './auth.module';
 import { UserModule } from './user.module';
 import { RewardModule } from './reward.module';
+import { StoreModule } from './store.module';
 
 @Module({
   providers: [Logger],
@@ -26,6 +27,7 @@ import { RewardModule } from './reward.module';
     UserModule,
     TerminusModule,
     RewardModule,
+    StoreModule,
   ],
 })
 export class AppModule implements NestModule {

@@ -4,7 +4,7 @@ import { IsUUID, IsInt, Min } from 'class-validator';
 import { AutoValidator } from '@gameficato/common/utils/validate.util';
 import { Reward } from '@gameficato/customers/domain/entities/reward.entity';
 import { RewardRepository } from '@gameficato/customers/domain/repositories/reward.repository';
-import { CreateRewardUseCase } from '@gameficato/customers/application/usecases/reward/create_reward.usecase';
+import { CreateRewardUseCase } from '@gameficato/customers/application/usecases/reward/create-reward.usecase';
 import { filterProperties } from '@gameficato/common/utils/filter_properties.util';
 import { Type } from 'class-transformer';
 import {

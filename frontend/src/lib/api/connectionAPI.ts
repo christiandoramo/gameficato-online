@@ -1,8 +1,9 @@
+// src/lib/api/connectionAPI.ts
 import axios, { type AxiosRequestConfig } from 'axios';
 
 import { ERROR_ACCESS_DANIED, ERROR_CONNECTION } from '../utils/error-status';
 import { MethodsEnum} from '../utils/http-methods.enum'
-import { getAuthorizationToken } from './auth';
+import { AUTHORIZATION_KEY, getAuthorizationToken } from './auth';
 
 export type MethodType = 'get' | 'post' | 'put' | 'patch' | 'delete';
 
@@ -10,7 +11,7 @@ export default class ConnectionAPI {
   static async call<T>(url: string, method: MethodType, body?: unknown): Promise<T> {
     const config: AxiosRequestConfig = {
       headers: {
-        Authorization: getAuthorizationToken(),
+        Authorization: getAuthorizationToken(AUTHORIZATION_KEY),
         'Content-Type': 'application/json',
       },
     };
@@ -29,6 +30,7 @@ export default class ConnectionAPI {
 
   static async connect<T>(url: string, method: MethodType, body?: unknown): Promise<T> {
     return ConnectionAPI.call<T>(url, method, body).catch((error) => {
+      console.log(error)
       if (error.response) {
         switch (error.response.status) {
           case 401:

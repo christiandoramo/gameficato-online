@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { URL_GAMEPLAY } from "@/lib/api/base-urls";
 import { MethodsEnum } from "@/lib/utils/http-methods.enum";
 import { useRequest } from "@/lib/hooks/useRequest";
+import { getUserId } from "@/lib/api/auth";
+import { useGlobalContext } from "@/lib/contexts/globalContext";
 
 interface CheckInConfirmationResponse {
   message: string;
@@ -21,13 +23,20 @@ export default function GameCheckIn() {
   const [result, setResult] = useState<CheckInConfirmationResponse | null>(
     null
   );
+  const { user } = useGlobalContext();
 
   const { request } = useRequest();
 
   const handleCheckIn = async () => {
     const data = await request<CheckInConfirmationResponse>(
       `${URL_GAMEPLAY}/${1}/${"userId-dasdsdasdasdasd"}`,
-      MethodsEnum.GET
+      MethodsEnum.POST,
+      undefined,
+      {
+        userId: user?.id || getUserId(),
+        email: user?.email,
+        storeId: user?.storeId,
+      }
     );
     setResult(data ?? null);
   };

@@ -55,7 +55,7 @@ export class GetUserByIdServiceNats {
 
     this.logger.debug('Received user message.', { result });
 
-    // If no user found.
+    // If no user found.>
     if (!result) return null;
 
     return result;

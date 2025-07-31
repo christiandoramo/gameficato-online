@@ -10,6 +10,7 @@ import {
   NatsModule,
   ValidationModule,
 } from '@gameficato/common';
+import { StoreModule } from './store.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import {
     TerminusModule,
     UserModule,
     RewardModule,
+    StoreModule,
   ],
   providers: [Logger],
 })

@@ -1,14 +1,50 @@
 # gameficato-online
 
-## Como rodar
-clonar e abrir o repositorio
-Forma mais manual: em 3 terminais (copiar e rodar o comando abaixo)
+## Como rodar (maneira manual - sem run automatico com docker-compose)
+
+1. clonar e abrir o repositorio: https://github.com/christiandoramo/gameficato-online.git 
+
+
+2. deve estar na raíz do projeto e abrir 4 terminais, e rode no primeiro terminal  (só funciona com docker, docker compose e node instalado):
+
+```
 cd backend;
-docker-compose --profile local up -d;
-cd ../backend-games;
-docker-compose up -d
-cd ../frontend
-docker-compose up -d
+docker-compose --profile infra up -d;
+npm install;
+./migrate.sh;
+./seed.sh;
+```
+esperar banco subir e instalar, depois rodar:
+```
+npx nest start customers;
+```
+
+3. agora rode no segundo terminal
+```
+npx nest start api-gateway;
+```
+3. agora no terceiro terminal (só funciona com Go instalado):
+
+```
+cd backend-games;
+docker-compose up -d;
+go mod tidy;
+```
+esperar subir banco e depois rodar:
+```
+go run ./cmd/server/main.go;
+```
+4. no último terminal, rode
+
+```
+cd frontend;
+npm install;
+```
+esperar instalar e então rodar:
+```
+npm run dev;
+```
+O projeto ainda não está em funcionamento com o Mercato Online porque ainda não foi desenvolvido o login
 
 ### Artefatos
 

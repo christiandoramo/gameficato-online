@@ -1,23 +1,30 @@
 // frontend/src/App.tsx
+import { useEffect } from "react";
+import {
+  createBrowserRouter,
+  type RouteObject,
+  RouterProvider,
+} from "react-router-dom";
 
-import { useEffect } from 'react';
-import { createBrowserRouter, type RouteObject, RouterProvider } from 'react-router-dom';
+import { homeRoutes, loginRoutes } from "./pages/routes";
+import {
+  getAuthorizationToken,
+  getUserId,
+  verifyLoggedIn,
+} from "./lib/api/auth";
+import { useNotification } from "./lib/hooks/useNotification";
+import { useGlobalContext } from "./lib/contexts/globalContext";
+import { useRequest } from "./lib/hooks/useRequest";
+import { URL_USER } from "./lib/api/base-urls";
+import { MethodsEnum } from "./lib/utils/http-methods.enum";
 
-import { homeRoutes,loginRoutes } from './pages/routes';
-import { URL_USER } from './lib/api/base-urls';
-import { MethodsEnum } from './lib/utils/http-methods.enum';
-import { verifyLoggedIn } from './lib/api/auth';
-import { useGlobalContext } from './lib/contexts/globalContext';
-import { useNotification } from './lib/hooks/useNotification';
-import { useRequest } from './lib/hooks/useRequest';
-
-const routes: RouteObject[] = [...loginRoutes];
-const routesLoggedIn: RouteObject[] = [...homeRoutes].map((route) => ({
+const publicRoutes: RouteObject[] = [...loginRoutes];
+const protectedRoutes: RouteObject[] = [...homeRoutes].map((route) => ({
   ...route,
-  loader: verifyLoggedIn,
+  loader: verifyLoggedIn, // mantém seu loader pra rotas protegidas
 }));
 
-const router = createBrowserRouter([...routes, ...routesLoggedIn]);//, ...registerRoutes]);
+const router = createBrowserRouter([...publicRoutes, ...protectedRoutes]);
 
 function App() {
   const { contextHolder } = useNotification();
@@ -25,7 +32,12 @@ function App() {
   const { request } = useRequest();
 
   useEffect(() => {
-    request(URL_USER, MethodsEnum.GET, setUser);
+
+  const token = getAuthorizationToken();
+  const userId = getUserId();
+    if (token && userId) {
+      request(`${URL_USER}/${userId}`, MethodsEnum.GET, setUser);
+    }
   }, []);
 
   return (

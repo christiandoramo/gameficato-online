@@ -12,6 +12,9 @@ export const NATS_SERVICES = {
   REWARD: {
     CREATE: 'CUSTOMERS.reward.create',
   },
+  STORE: {
+    GET_ALL: 'CUSTOMERS.stores.getAll',
+  },
 };
 
 export const NATS_EVENTS = {

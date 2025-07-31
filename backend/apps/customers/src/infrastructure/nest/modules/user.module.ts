@@ -13,6 +13,7 @@ import { GetUserByEmailMicroserviceController } from '@gameficato/customers/infr
 import { ChangeUserPasswordMicroserviceController } from '@gameficato/customers/infrastructure/nest/controllers/user/change_password.controller';
 import { GetUserByIdMicroserviceController } from '@gameficato/customers/infrastructure/nest/controllers/user/get_by_id.controller';
 import { GetAllUserMicroserviceController } from '@gameficato/customers/infrastructure/nest/controllers/user/get_all.controller';
+import { UserEventNatsEmitter } from '../events/user.emitter';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { GetAllUserMicroserviceController } from '@gameficato/customers/infrastr
     ConfigModule,
     LoggerModule,
     ValidationModule,
-    NatsModule.forFeature(),
+    NatsModule.forFeature([UserEventNatsEmitter]),
     BcryptModule,
     DatabaseModule.forFeature([UserModel]),
   ],

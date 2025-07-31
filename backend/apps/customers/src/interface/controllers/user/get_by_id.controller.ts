@@ -1,5 +1,11 @@
 import { Logger } from 'winston';
-import { IsEmail, IsString, IsUUID, MaxLength } from 'class-validator';
+import {
+  IsEmail,
+  IsNumber,
+  IsString,
+  IsUUID,
+  MaxLength,
+} from 'class-validator';
 import { AutoValidator } from '@gameficato/common/utils/validate.util';
 import { User } from '@gameficato/customers/domain/entities/user.entity';
 import { UserRepository } from '@gameficato/customers/domain/repositories/user.repository';
@@ -36,9 +42,12 @@ export class GetUserByIdResponse
   @MaxLength(255)
   name: string;
 
-  @IsString()
-  @MaxLength(255)
-  password: string;
+  // @IsString()
+  // @MaxLength(255)
+  // password: string;
+
+  @IsNumber()
+  coins: number;
 
   constructor(props: TGetUserByIdResponse) {
     super(
@@ -46,7 +55,8 @@ export class GetUserByIdResponse
         email: null,
         id: null,
         name: null,
-        password: null,
+        // password: null,
+        coins: null,
       } as TGetUserByIdResponse),
     );
   }

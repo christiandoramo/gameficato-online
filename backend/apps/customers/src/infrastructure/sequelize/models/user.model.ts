@@ -18,7 +18,7 @@ import {
   User,
   UserEntity,
 } from '@gameficato/customers/domain/entities/user.entity';
-import { StoreModel } from './store-stub.model ';
+import { StoreModel } from './store_stub.model';
 
 export type UserAttributes = User;
 export type UserCreationAttributes = Pick<

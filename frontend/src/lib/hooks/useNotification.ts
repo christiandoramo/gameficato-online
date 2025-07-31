@@ -1,8 +1,8 @@
 // frontend/src/lib/hooks/useNotification.ts
-import { notification as notificationAntd } from 'antd';
-import { useEffect } from 'react';
+import { notification as notificationAntd } from "antd";
+import { useEffect } from "react";
 
-import { useGlobalContext } from '../contexts/globalContext';
+import { useGlobalContext } from "../contexts/globalContext";
 
 export const useNotification = () => {
   const [api, contextHolder] = notificationAntd.useNotification();
@@ -10,11 +10,16 @@ export const useNotification = () => {
 
   useEffect(() => {
     if (notification?.message && notification.type) {
-      api[notification.type]({
+      console.log({
         message: `${notification.message}`,
         description: notification.description,
-        placement: 'top',
+        placement: "bottomRight",
       });
+      // api[notification.type]({
+      //   message: `${notification.message}`,
+      //   description: notification.description,
+      //   placement: 'bottomRight',
+      // });
     }
   }, [notification]);
 
