@@ -8,7 +8,7 @@ export default function Home() {
       id: 1,
       title: "Check-in diário",
       description: "Entre diariamente e progrida em prêmios",
-      img: "https://via.placeholder.com/400x200?text=Check-in+Premiado", // "./checkin-thum.png",
+      img: "./checkin-thumb.png",
     },
     {
       id: 2,

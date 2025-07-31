@@ -58,7 +58,12 @@ export default function AuthenticatedLayout() {
       >
         {/* logo */}
         <div
-          style={{ height: 64, display: "flex", alignItems: "center", justifyContent: "center" }}
+          style={{
+            height: 64,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
           onClick={() => setCollapsed(!collapsed)}
         >
           <img
@@ -94,13 +99,17 @@ export default function AuthenticatedLayout() {
             textAlign: "center",
           }}
         >
-          <Avatar style={{ backgroundColor: "#D9D9D9", marginBottom: 8 }}>AM</Avatar>
+          <Avatar style={{ backgroundColor: "#D9D9D9", marginBottom: 8 }}>
+            AM
+          </Avatar>
           {!collapsed && <Text style={{ color: "#fff" }}>Arthur Morgan</Text>}
           <Button
             icon={<LogoutOutlined />}
             danger
             style={{ marginTop: 8, width: "80%", maxWidth: 160 }}
-            onClick={() => {/* logout */}}
+            onClick={() => {
+              /* logout */
+            }}
           >
             {!collapsed && "Sair"}
           </Button>

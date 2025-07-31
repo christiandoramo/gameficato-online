@@ -58,13 +58,12 @@ func (s *Service) DoCheckIn(userIDStr, email, storeID string) (CheckInResponse, 
 	var finalResp CheckInResponse
 
 	err = s.db.Transaction(func(tx *gorm.DB) error {
-		// 1) login e token
 		if err := s.authClient.Login(email, "qualquer-senha", storeID); err != nil {
 			return fmt.Errorf("login falhou: %w", err)
 		}
 		s.rewardClient.Token = s.authClient.Token
 
-		// 2) busca ou cria sequence
+		// busca ou cria sequence
 		var seq models.Sequence
 		if err := tx.
 			Where("user_id = ? AND ended_at IS NULL", userID).
@@ -86,7 +85,7 @@ func (s *Service) DoCheckIn(userIDStr, email, storeID string) (CheckInResponse, 
 			return err
 		}
 
-		// 4) conta posição
+		// conta posição
 		var count int64
 		if err := tx.Model(&models.CheckIn{}).
 			Where("sequence_id = ?", seq.ID).
@@ -95,7 +94,7 @@ func (s *Service) DoCheckIn(userIDStr, email, storeID string) (CheckInResponse, 
 		}
 		coins := baseCoins + int(count-1)*coinsStep
 
-		// 5) cria reward
+		// cria reward
 		rr, err := s.rewardClient.Create(clients.RewardRequest{
 			Coins:       coins,
 			InGameCoins: coins,
@@ -106,7 +105,7 @@ func (s *Service) DoCheckIn(userIDStr, email, storeID string) (CheckInResponse, 
 			return fmt.Errorf("falha ao criar reward: %w", err)
 		}
 
-		// 6) prepara resposta
+		// prepara resposta
 		finalResp = CheckInResponse{
 			Message:       fmt.Sprintf("Check-in realizado! Você ganhou %d moedas.", coins),
 			CoinsReceived: coins,

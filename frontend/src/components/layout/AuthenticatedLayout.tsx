@@ -15,6 +15,11 @@ export default function AuthenticatedLayout() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
+  const expandedWidth = "20vw";
+  const collapsedWidth = 80;
+
+  const siderWidth = collapsed ? `${collapsedWidth}px` : expandedWidth;
+
   const items = [
     {
       key: "/",
@@ -104,14 +109,20 @@ export default function AuthenticatedLayout() {
 
       <Layout
         style={{
-          marginLeft: collapsed ? 80 : "20vw", // ← desloca o conteúdo
+          marginLeft: siderWidth,
+          width: `calc(100% - ${siderWidth})`,
           minHeight: "100vh",
         }}
       >
-        <Content style={{ margin: "24px 16px 0", overflow: "auto" }}>
-          <div style={{ padding: 24, background: "#fff", minHeight: 360 }}>
-            <Outlet />
-          </div>
+        <Content
+          style={{
+            margin: "24px 16px",
+            padding: 24,
+            background: "#fff",
+            minHeight: "calc(100vh - 48px)",
+          }}
+        >
+          <Outlet />
         </Content>
       </Layout>
     </Layout>
