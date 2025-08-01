@@ -3,11 +3,16 @@ import { useEffect, useState } from "react";
 import { Modal, Spin } from "antd";
 import { Button } from "@/components/ui/button";
 
-import { URL_GAMEPLAY } from "@/lib/api/base-urls";
+import { URL_GAMEPLAY, URL_USER } from "@/lib/api/base-urls";
 import { MethodsEnum } from "@/lib/utils/http-methods.enum";
 import { useRequest } from "@/lib/hooks/useRequest";
-import { getUserId } from "@/lib/api/auth";
+import {
+  getAuthorizationToken,
+  getUserId,
+  type UserApiResponse,
+} from "@/lib/api/auth";
 import { useGlobalContext } from "@/lib/contexts/globalContext";
+import ConnectionAPI from "@/lib/api/connectionAPI";
 
 interface CheckInResponse {
   message: string;
@@ -17,7 +22,7 @@ interface CheckInResponse {
 
 interface CalendarDay {
   coins: number;
-  day: string;       // ISO
+  day: string; // ISO
   received: boolean;
 }
 
@@ -34,9 +39,9 @@ export default function GameCheckIn() {
   const [loadingCal, setLoadingCal] = useState(false);
   const [checking, setChecking] = useState(false);
 
-  const userId = user?.id || getUserId();
-    const storeId = user?.storeId;
-    const email = user?.email
+  const userId = user?.id;
+  const storeId = user?.storeId;
+  const email = user?.email;
 
   const gameId = 1;
 
@@ -51,11 +56,13 @@ export default function GameCheckIn() {
       setCalendar(data?.calendarDays.slice(0, 30) ?? []);
     } catch {
       // placeholder: 30 dias com 0 moedas
-      const placeholder: CalendarDay[] = Array.from({ length: 30 }).map((_, i) => ({
-        coins: 0,
-        day: new Date().toISOString(),
-        received: false,
-      }));
+      const placeholder: CalendarDay[] = Array.from({ length: 30 }).map(
+        (_, i) => ({
+          coins: 0,
+          day: new Date().toISOString(),
+          received: false,
+        })
+      );
       setCalendar(placeholder);
     } finally {
       setLoadingCal(false);
@@ -64,6 +71,8 @@ export default function GameCheckIn() {
 
   /** faz check-in e revalida calendário */
   const handleCheckIn = async () => {
+    if (!userId || !email || !storeId) return;
+
     setChecking(true);
     try {
       const res = await request<CheckInResponse>(
@@ -86,7 +95,22 @@ export default function GameCheckIn() {
     }
   };
 
+  const { setUser } = useGlobalContext();
+
   useEffect(() => {
+    const getUserNow = async () => {
+      const token = getAuthorizationToken();
+      const userId = getUserId();
+      if (token && userId) {
+        await request(`${URL_USER}/${userId}`, MethodsEnum.GET, setUser);
+        const perfil = await ConnectionAPI.connect<UserApiResponse>(
+          `${URL_USER}/${userId}`,
+          MethodsEnum.GET
+        );
+        setUser(perfil.data);
+      }
+    };
+    getUserNow();
     fetchCalendar();
   }, []);
 
@@ -98,9 +122,9 @@ export default function GameCheckIn() {
         <h2 className="text-3xl font-bold mb-4">Check-in Diário</h2>
         <p className="mb-6">Clique para receber suas moedas do dia!</p>
         <Button
-          onClick={() =>handleCheckIn ()}
+          onClick={() => handleCheckIn()}
           disabled={checking}
-          className="bg-neutral-800 px-6 py-2 text-lg"
+          className="bg-neutral-800 px-6 py-2 text-l text-white"
         >
           {checking ? "Carregando..." : "Fazer Check-in"}
         </Button>
@@ -121,7 +145,11 @@ export default function GameCheckIn() {
                   key={idx}
                   className={`
                     flex flex-col items-center p-4 rounded-lg border
-                    ${day.received ? "bg-green-100 border-green-400" : "bg-white border-gray-300"}
+                    ${
+                      day.received
+                        ? "bg-green-100 border-green-400"
+                        : "bg-white border-gray-300"
+                    }
                   `}
                 >
                   <span className="text-sm text-gray-500 mb-1">
