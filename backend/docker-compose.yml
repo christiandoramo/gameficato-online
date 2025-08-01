@@ -29,6 +29,56 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:?POSTGRES_USER env var is missing on .env file}
       POSTGRES_DB: ${POSTGRES_DB:?POSTGRES_DB env var is missing on .env file}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD env var is missing on .env file}
+  db-2:
+    profiles:
+      - local
+      - infra
+    build:
+      context: ./deploy/database
+      dockerfile: Dockerfile
+    command: [ 'postgres', '-c', 'log_statement=all', '-c', 'log_destination=stderr']
+    hostname: db-2
+    restart: unless-stopped
+    ports:
+      - '5435:5432'
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:?POSTGRES_USER env var is missing on .env file}
+      POSTGRES_DB: ${POSTGRES_DB_2:?POSTGRES_DB_2 env var is missing on .env file}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD env var is missing on .env file}
+
+  managers:
+    profiles:
+      - local
+    build:
+      context: .
+      dockerfile: ./deploy/service/Dockerfile
+      args:
+        SERVICE: managers
+    hostname: managers
+    restart: unless-stopped
+    environment:
+      APP_NAME: 'MANAGERS MICROSERVICE'
+      APP_ENV: ${MANAGERS_APP_ENV:-local}
+      APP_DATABASE_HOST: 'db'
+      APP_DATABASE_MIGRATION_HOST: ${POSTGRES_DB:?POSTGRES_DB env var is missing on .env file}
+      APP_DATABASE_PORT: 5435
+      APP_DATABASE_SCHEMA: public
+      APP_DATABASE_DATABASE_2: ${POSTGRES_DB_2:?POSTGRES_DB_2 env var is missing on .env file}
+      APP_DATABASE_USERNAME: ${POSTGRES_USER:?POSTGRES_USER env var is missing on .env file}
+      APP_DATABASE_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD env var is missing on .env file}
+      APP_DATABASE_SSL: 'false'
+      APP_DATABASE_MIGRATION_TABLE: 'sequelize_meta_managers'
+      APP_DATABASE_SEEDERS_TABLE: 'sequelize_seeders_managers'
+      APP_DATABASE_LOG: ${MANAGERS_APP_DATABASE_LOG:-true}
+      APP_NATS_SERVERS: 'nats:4222'
+      APP_NATS_DELIVER_GROUP: 'managers'
+      APP_NATS_QUEUE_GROUP: 'managers'
+      APP_NATS_DELIVER_TO: 'managers'
+      APP_NATS_SUBJECT: 'managers.>'
+      APP_LOG_LEVEL: ${MANAGERS_APP_LOG_LEVEL:-debug}
+    depends_on:
+      - nats
+      - db-2
 
   customers:
     profiles:
@@ -90,4 +140,6 @@ services:
     depends_on:
       - nats
       - customers
+      - managers
       - db
+      - db-2

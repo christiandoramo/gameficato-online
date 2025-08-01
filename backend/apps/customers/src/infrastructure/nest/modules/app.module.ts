@@ -18,7 +18,7 @@ import { StoreModule } from './store.module';
     LoggerModule,
     ValidationModule,
     DatabaseModule,
-    NatsModule, // ← e isto aqui
+    NatsModule,
     TerminusModule,
     UserModule,
     RewardModule,

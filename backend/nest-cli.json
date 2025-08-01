@@ -28,6 +28,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/customers/tsconfig.app.json"
       }
+    },
+    "managers": {
+      "type": "application",
+      "root": "apps/managers",
+      "entryFile": "main",
+      "sourceRoot": "apps/managers/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/managers/tsconfig.app.json"
+      }
     }
   }
 }

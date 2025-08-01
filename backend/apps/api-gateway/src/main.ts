@@ -128,7 +128,7 @@ async function bootstrap() {
 
   await app.listen(appPort);
 
-  logger.info('Microservice HTTP successfully started.', { appPort });
+  logger.info('API gateway HTTP successfully started.', { appPort });
 }
 
 function openapi() {

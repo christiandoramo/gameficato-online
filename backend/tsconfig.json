@@ -34,6 +34,12 @@
       ],
       "@gameficato/customers/*": [
         "apps/customers/src/*"
+      ],
+      "@gameficato/managers": [
+        "apps/managers/src"
+      ],
+      "@gameficato/managers/*": [
+        "apps/managers/src/*"
       ]
     },
     "plugins": [

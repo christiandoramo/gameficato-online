@@ -1,4 +1,4 @@
-import type { Domain } from '@gameficato/common/helpers/domain.helper';
+import type { Domain, UserRole } from '@gameficato/common/helpers';
 
 export interface User extends Domain<string> {
   name: string;
@@ -7,7 +7,7 @@ export interface User extends Domain<string> {
   coins: number;
   inGameCoins: number;
   storeId: string;
-  userRole: 'store_customer' | 'store_admin' | 'admin';
+  userRole: UserRole;
 }
 
 export class UserEntity implements User {
@@ -19,7 +19,7 @@ export class UserEntity implements User {
   coins: number;
   inGameCoins: number;
   storeId: string;
-  userRole: 'store_customer' | 'store_admin' | 'admin';
+  userRole: UserRole;
 
   constructor(props: User | Domain<string>) {
     Object.assign(this, props);
